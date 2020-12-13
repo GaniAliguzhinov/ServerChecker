@@ -6,3 +6,4 @@ from .models import Query
 
 class QueryListView(ListView):
     model = Query
+
