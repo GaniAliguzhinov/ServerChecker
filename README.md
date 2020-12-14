@@ -8,9 +8,11 @@ To deploy on Ubuntu with configured `ufw` that allows connections on desired por
 
 1. Clone the project
 
-2. Install python3 and pip3
+2. `./init.sh`
 
-3. `pip install -r requirements.txt`
+3. `./update_psql_port.sh`
+
+4. `source venv/bin/activate`
 
 4. `./manage.py makemigrations` and `./manage.py migrate`
 
@@ -19,9 +21,6 @@ To deploy on Ubuntu with configured `ufw` that allows connections on desired por
 6. In one console, run `./manage.py process_tasks`, or setup a cron job.
 
 7. In another console, run server: `./manage.py runserver 0.0.0.0:<desired_port>`
-
-
-To use a database other than SQLite, configure `DATABASES` in `ServerChecker/settings.py`.
 
 
 # Usage

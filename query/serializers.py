@@ -6,5 +6,5 @@ class QuerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Query
         fields = ['url', 'exists', 'timeout', 'ipaddress', 'httpcode',
-                  'query_time']
+                  'querytime']
 

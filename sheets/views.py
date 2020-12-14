@@ -7,8 +7,10 @@ import openpyxl
 from io import BytesIO
 from query.models import Query
 from multiprocessing import Process, Queue, Pool, cpu_count
+from multiprocessing import set_start_method, get_context
 from background_task import background
 from django.utils import timezone
+import time
 
 
 def upload_file(request):
@@ -34,13 +36,14 @@ def process_query(url):
     query.save()
 
 
-@background(schedule=1)
+# @background(schedule=1)
 def process(urls):
     """
     Task for processing a lot of queries via multithreading,
     run delayed but synchronously.
     Each query is run asynchronously.
     """
+    time.sleep(2)
     pool = Pool(cpu_count())
     pool.map(process_query, urls)
 

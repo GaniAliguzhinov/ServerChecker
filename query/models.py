@@ -14,12 +14,12 @@ class Query(models.Model):
     """
     Class that holds both query url and results of the query.
     """
-    url = models.URLField(max_length=250, default="google.com")
+    url = models.TextField(max_length=250)
     exists = models.BooleanField(default=True)
     timeout = models.BooleanField(default=False)
     ipaddress = models.TextField(max_length=250)
     httpcode = models.TextField(max_length=250)
-    query_time = models.DateTimeField()
+    querytime = models.DateTimeField()
 
     def __str__(self):
         """
@@ -27,7 +27,7 @@ class Query(models.Model):
         """
         result = "[" + ("" if self.exists else "Cannot Connect|")
         result += ("Timeout" if self.timeout else "") + "]:\t"
-        result += "[" + str(self.query_time.isoformat()) + "]\t"
+        result += "[" + str(self.querytime.isoformat()) + "]\t"
         result += self.url + " (" + self.ipaddress + ")"
         result += ":\t" + self.httpcode
         return result
@@ -65,7 +65,7 @@ class Query(models.Model):
 
         # Initialize url field with a valid url, and time with current time
         kwargs['url'] = url
-        kwargs['query_time'] = timezone.localtime()
+        kwargs['querytime'] = timezone.localtime()
 
         # Attempt connection with a long timeout (2s), and set appropriate
         # flags on failure. If connected, write ip and status code to the model
