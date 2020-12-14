@@ -1,1 +1,1 @@
-celery worker -A ServerChecker --concurrency=4
+celery worker -A ServerChecker --concurrency=4 --loglevel=info

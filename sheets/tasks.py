@@ -12,5 +12,10 @@ def process(urls):
     # pool = Pool(cpu_count())
     # pool.map(process_query, urls)
     for url in urls:
-        query = Query(url=url)
-        query.save()
+        process_single(url)
+
+
+@app.task
+def process_single(url):
+    query = Query(url=url)
+    query.save()
