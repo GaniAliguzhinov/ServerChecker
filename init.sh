@@ -8,6 +8,11 @@ PROJECT_NAME=${3:-"urlchecker"}
 sudo apt-get update
 sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx
 
+# Install Redis
+
+sudo apt-get install redis-server
+sudo service redis-server restart
+
 # Run postgres
 sudo service postgresql restart
 
@@ -24,6 +29,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 sudo ufw allow ${PORT_SITE}
+
 
 # python testsite/manage.py runserver 0.0.0.0:${PORT_SITE}
 

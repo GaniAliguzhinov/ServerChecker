@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'background_task',
+    'celery',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 BACKGROUND_TASK_RUN_ASYNC = False
 MAX_ATTEMPTS = 1
+
+
+#CELERY_BROKEN_URL = 'amqp://localhost'
+BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://localhost:6379/0")

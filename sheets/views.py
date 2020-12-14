@@ -1,16 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from .forms import UploadSheetForm
-from openpyxl import Workbook
 import openpyxl
 from io import BytesIO
-from query.models import Query
-from multiprocessing import Process, Queue, Pool, cpu_count
-from multiprocessing import set_start_method, get_context
-from background_task import background
-from django.utils import timezone
-import time
+from sheets.tasks import process
 
 
 def upload_file(request):
@@ -26,26 +18,6 @@ def upload_file(request):
     else:
         form = UploadSheetForm()
     return render(request, 'upload.html', {'form': form})
-
-
-def process_query(url):
-    """
-    Task for processing a single query
-    """
-    query = Query(url=url)
-    query.save()
-
-
-# @background(schedule=1)
-def process(urls):
-    """
-    Task for processing a lot of queries via multithreading,
-    run delayed but synchronously.
-    Each query is run asynchronously.
-    """
-    time.sleep(2)
-    pool = Pool(cpu_count())
-    pool.map(process_query, urls)
 
 
 def process_sheet(file):
@@ -65,4 +37,4 @@ def process_sheet(file):
         urls.append(url)
 
     # Process queries on all urls
-    process(urls)
+    process.delay(urls)

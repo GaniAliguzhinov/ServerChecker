@@ -1,26 +1,30 @@
 # ServerChecker
 Django based web service for checking remote servers for availability.
 
+Celery: [tutorial](https://testdriven.io/blog/django-and-celery/)
+
 
 # Deployment
 
 To deploy on Ubuntu with configured `ufw` that allows connections on desired port:
 
-1. Clone the project
+* Clone the project
 
-2. `./init.sh`
+* `./init.sh`
 
-3. `./update_psql_port.sh`
+* `./update_psql_port.sh`
 
-4. `source venv/bin/activate`
+* `source venv/bin/activate`
 
-4. `./manage.py makemigrations` and `./manage.py migrate`
+* `./manage.py makemigrations` and `./manage.py migrate`
 
-5. `./manage.py createsuperuser`
+* `./manage.py createsuperuser`
 
-6. In one console, run `./manage.py process_tasks`, or setup a cron job.
+* In one console, run `./start_celery`, or setup a cron job.
 
-7. In another console, run server: `./manage.py runserver 0.0.0.0:<desired_port>`
+* In another console, run `redis-server`
+
+* In another console, run server: `./manage.py runserver 0.0.0.0:<desired_port>`
 
 
 # Usage
