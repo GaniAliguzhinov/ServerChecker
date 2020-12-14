@@ -17,8 +17,7 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadSheetForm(request.POST, request.FILES)
         if form.is_valid():
-            p = Process(target=process_sheet, args=(request.FILES['sheet'],))
-            p.start()
+            process_sheet(request.FILES['sheet'])
             return redirect('/queries/')
     else:
         form = UploadSheetForm()

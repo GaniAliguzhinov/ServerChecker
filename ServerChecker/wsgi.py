@@ -12,5 +12,6 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ServerChecker.settings')
-
+os.environ["DJNAGO_ALLOW_ASYNC_UNSAGE"] = "true"
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ServerChecker.settings")
 application = get_wsgi_application()

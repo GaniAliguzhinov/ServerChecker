@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
+    path('', views.home, name='home'),
     path('sheets/', include('sheets.urls')),
     path('queries/', include('query.urls')),
     path('api/', include('api.urls')),
