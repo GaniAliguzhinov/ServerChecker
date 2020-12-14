@@ -33,14 +33,14 @@ class QueryAdmin(admin.ModelAdmin):
 
         # Data for HTTP not OK
         chart_data3 = (
-            Query.objects.filter(~Q(httpcode="200")).annotate(date=TruncMinute("querytime")).values("date")
+            Query.objects.filter(Q(exists=True)).filter(Q(timeout=False)).filter(~Q(httpcode="200")).annotate(date=TruncMinute("querytime")).values("date")
             .annotate(y=Count("id")).order_by("-date")
         )
         as_json3 = json.dumps(list(chart_data3), cls=DjangoJSONEncoder)
 
         # Data for HTTP OK
         chart_data4 = (
-            Query.objects.filter(Q(httpcode="200")).annotate(date=TruncMinute("querytime")).values("date")
+            Query.objects.filter(Q(exists=True)).filter(Q(timeout=False)).filter(Q(httpcode="200")).annotate(date=TruncMinute("querytime")).values("date")
             .annotate(y=Count("id")).order_by("-date")
         )
         as_json4 = json.dumps(list(chart_data4), cls=DjangoJSONEncoder)
