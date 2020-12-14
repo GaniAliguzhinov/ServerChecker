@@ -37,7 +37,9 @@ def process_query(url):
 @background(schedule=1)
 def process(urls):
     """
-    Task for processing a lot of queries via multithreading, run delayed
+    Task for processing a lot of queries via multithreading,
+    run delayed but synchronously.
+    Each query is run asynchronously.
     """
     pool = Pool(cpu_count())
     pool.map(process_query, urls)
