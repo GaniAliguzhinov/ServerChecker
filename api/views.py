@@ -12,6 +12,7 @@ def site_check(request):
         url = request.GET.get('url', None)
         if url is not None:
             query = Query(url=url)
+            query.save()
             serializer = QuerySerializer(query)
             return Response(serializer.data)
         else:
