@@ -15,7 +15,10 @@ def process(urls):
         process_single(url)
 
 
-@app.task
+@app.task(max_retries=3, retry_jitter=True)
 def process_single(url):
-    query = Query(url=url)
-    query.save()
+    try:
+        query = Query(url=url)
+        query.save()
+    except Exception:
+        print('bad task')

@@ -4,8 +4,6 @@ import requests
 from requests.exceptions import ConnectionError, Timeout
 
 from django.utils import timezone
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
 
 from django.db import models
 
@@ -41,11 +39,6 @@ class Query(models.Model):
             url = 'www.' + url
         if re.match(r'^[a-zA-Z]+://', url) is None:
             url = 'http://' + url
-        validator = URLValidator()
-        try:
-            validator(url)
-        except ValidationError:
-            raise ValidationError
         return url
 
     def __init__(self, *args, **kwargs):
@@ -57,20 +50,18 @@ class Query(models.Model):
         # If bad url, do not initialize
         try:
             url = self.fixurl(kwargs['url'])
-        except ValidationError:
-            return
+            print(url)
         except KeyError:
             super().__init__(*args, **kwargs)
             return
-
         # Initialize url field with a valid url, and time with current time
         kwargs['url'] = url
         kwargs['querytime'] = timezone.localtime()
 
-        # Attempt connection with a long timeout (2s), and set appropriate
+        # Attempt connection with a long timeout (1s), and set appropriate
         # flags on failure. If connected, write ip and status code to the model
         try:
-            response = requests.get(url, timeout=2, stream=True)
+            response = requests.get(url, timeout=1, stream=True)
         except ConnectionError:
             kwargs['exists'] = False
         except Timeout:
