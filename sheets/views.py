@@ -7,6 +7,8 @@ import openpyxl
 from io import BytesIO
 from query.models import Query
 from multiprocessing import Process, Queue, Pool, cpu_count
+from background_task import background
+from django.utils import timezone
 
 
 def upload_file(request):
@@ -25,8 +27,20 @@ def upload_file(request):
 
 
 def process_query(url):
+    """
+    Task for processing a single query
+    """
     query = Query(url=url)
     query.save()
+
+
+@background(schedule=1)
+def process(urls):
+    """
+    Task for processing a lot of queries via multithreading, run delayed
+    """
+    pool = Pool(cpu_count())
+    pool.map(process_query, urls)
 
 
 def process_sheet(file):
@@ -37,7 +51,6 @@ def process_sheet(file):
     sheet = wb.active
 
     # To speed up, use a Pool
-    pool = Pool(cpu_count())
     urls = []
 
     for row in range(1, sheet.max_row+1):
@@ -47,4 +60,4 @@ def process_sheet(file):
         urls.append(url)
 
     # Process queries on all urls
-    pool.map(process_query, urls)
+    process(urls)

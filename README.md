@@ -16,7 +16,10 @@ To deploy on Ubuntu with configured `ufw` that allows connections on desired por
 
 5. `./manage.py createsuperuser`
 
-6. `./manage.py runserver 0.0.0.0:<desired_port>`
+6. In one console, run `./manage.py process_tasks`, or setup a cron job.
+
+7. In another console, run server: `./manage.py runserver 0.0.0.0:<desired_port>`
+
 
 To use a database other than SQLite, configure `DATABASES` in `ServerChecker/settings.py`.
 
@@ -24,5 +27,6 @@ To use a database other than SQLite, configure `DATABASES` in `ServerChecker/set
 # Usage
 
 Once deployed, the initial Excel sheet can be uploaded via `localhost:8000/sheets/`. 
+Results can be viewed by refreshing `localhost:8000/queries/`.
 
 It will then be processed: all urls in the sheet will be queried, results visible on `localhost:8000/admin/`.
